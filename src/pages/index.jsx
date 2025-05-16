@@ -7,9 +7,10 @@ import { useEffect, useState } from "react";
 
 export default function Home() {
   const [weather, setWeather] = useState({});
-  const [city, setCity] = useState({});
+  const [city, setCity] = useState("ulaanbaatar");
+  const [searchValue, setSearchValue] = useState("");
   const inter = (e) => setCity(e.target.value);
-  const weatherUrl = `https://api.weatherapi.com/v1/forecast.json?key=${process.env.NEXT_PUBLIC_WEATHER_API}&q=ulaanbaatar`;
+  const weatherUrl = `https://api.weatherapi.com/v1/forecast.json?key=${process.env.NEXT_PUBLIC_WEATHER_API}&q=${city}`;
 
   const getWeather = async () => {
     try {
@@ -24,10 +25,40 @@ export default function Home() {
     getWeather();
   }, []);
 
+  const getCity = async () => {
+    try {
+      const response = await fetch(weatherUrl);
+      const data = await response.json();
+      setCity(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const getCities = async () => {
+    try {
+      const response = await fetch(
+        "https://countriesnow.space/api/v0.1/countries"
+      );
+      const data = await response.json();
+
+      const result = data?.data?.filter((city) => {
+        const findCities = city.cities.find(
+          (findCity) => findCity === searchValue
+        );
+        return findCities;
+      });
+      const city = result[0].cities.find((city) => city === searchValue);
+      setSearchValue(city);
+    } catch (error) {}
+  };
+  useEffect(() => {
+    getCity();
+  }, []);
+
   return (
     <div className="justify-center flex">
       <div className="w-1/2 bg-[#F3F4F6] flex flex-col h-screen justify-center items-center">
-        <SearchInput inter={inter} getWeather={getWeather} />
+        <SearchInput inter={inter} />
         <div>
           <Image
             src="/narb.png"

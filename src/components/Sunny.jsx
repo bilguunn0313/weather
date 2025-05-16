@@ -2,7 +2,8 @@ import { MapPin } from "lucide-react";
 import { House } from "lucide-react";
 import { Heart } from "lucide-react";
 import { User } from "lucide-react";
-export const Sunny = ({ date, temp, condition }) => {
+import { SearchInput } from "./Search-input";
+export const Sunny = ({ date, temp, condition, text }) => {
   const d = new Date();
   return (
     <div className=" w-103 h-207 z-20 rounded-4xl overflow-hidden shadow-lg bg-white/75 backdrop-blur-md relative">
@@ -10,9 +11,7 @@ export const Sunny = ({ date, temp, condition }) => {
         <div className="flex justify-between">
           <div className="space-y-2">
             <p className="text-gray-400">{date}</p>
-            <h2 className="text-5xl font-extrabold text-gray-900">
-              Ulaanbaatar
-            </h2>
+            <h2 className="text-5xl font-extrabold text-gray-900">{text}</h2>
           </div>
           <MapPin className="w-8 h-8 text-gray-600" />
         </div>
